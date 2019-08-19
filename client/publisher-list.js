@@ -3,6 +3,8 @@ import '@material/mwc-fab'
 import '@material/mwc-icon'
 import { ScrollbarStyles } from '@things-factory/shell'
 import { css, html, LitElement } from 'lit-element'
+import './publisher-header'
+import './publisher-footer'
 
 export class PublisherList extends LitElement {
   static get styles() {
@@ -10,18 +12,20 @@ export class PublisherList extends LitElement {
       ScrollbarStyles,
       css`
         :host {
+          flex: 1;
           display: flex;
           flex-direction: column;
           position: relative;
-
           overflow: hidden;
         }
 
         ul {
+          flex: 1;
           width: 95vw;
           list-style: none;
           margin: 5px auto;
           padding: 0;
+          overflow: auto;
         }
 
         ul > li {
@@ -82,7 +86,8 @@ export class PublisherList extends LitElement {
 
   static get properties() {
     return {
-      publishers: Array
+      publishers: Array,
+      checkedPublishers: Array
     }
   }
 
@@ -90,13 +95,24 @@ export class PublisherList extends LitElement {
     super()
 
     this.publishers = []
+    this.checkedPublishers = []
   }
 
   render() {
     return html`
+      ${this.checkedPublishers.length > 0
+        ? html`
+            <publisher-header
+              .publishers=${this.publishers}
+              .checkedPublishers=${this.checkedPublishers}
+              @publisher-list-select-all=${e => this.onPublisherListSelectAll()}
+              @publisher-list-deselect-all=${e => this.onPublisherListDeselectAll()}
+            ></publisher-header>
+          `
+        : html``}
       <ul id="list">
         ${this.publishers.map(
-          p => html`
+          (p, i) => html`
             <li>
               <details
                 @click=${e => {
@@ -110,7 +126,13 @@ export class PublisherList extends LitElement {
                 }}
               >
                 <summary @click=${e => e.stopPropagation()}>
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    value=${i}
+                    @change=${e => {
+                      this.getCheckedPublishers()
+                    }}
+                  />
                   <mwc-icon
                     @click=${e =>
                       this.togglePlayButton({
@@ -133,12 +155,31 @@ export class PublisherList extends LitElement {
           `
         )}
       </ul>
+      ${this.checkedPublishers.length > 0
+        ? html`
+            <publisher-footer @publisher-delete=${e => this.onPublisherDelete(e)}></publisher-footer>
+          `
+        : html``}
     `
   }
 
-  updated(change) {}
+  updated(changed) {
+    if (changed.has('publishers')) this.onPublisherListDeselectAll()
+  }
 
   stateChanged(state) {}
+
+  getCheckedPublishers() {
+    var checked = this.renderRoot.querySelectorAll('input[type=checkbox]:checked')
+    var checkedIndice = Array.from(checked).map(c => c.value)
+
+    var checkedPublishers = []
+    checkedIndice.forEach(idx => {
+      checkedPublishers.push(this.publishers[idx])
+    })
+
+    this.checkedPublishers = checkedPublishers
+  }
 
   computeIcon(status) {
     switch (status) {
@@ -176,6 +217,37 @@ export class PublisherList extends LitElement {
           }
         })
       )
+  }
+
+  onPublisherListSelectAll() {
+    var unchecked = this.renderRoot.querySelectorAll('input[type=checkbox]:not(:checked)')
+    Array.from(unchecked).forEach(c => {
+      c.checked = true
+    })
+
+    this.checkedPublishers = [...this.publishers]
+  }
+
+  onPublisherListDeselectAll() {
+    var unchecked = this.renderRoot.querySelectorAll('input[type=checkbox]:checked')
+    Array.from(unchecked).forEach(c => {
+      c.checked = false
+    })
+
+    this.checkedPublishers = []
+  }
+
+  onPublisherDelete(e) {
+    e.stopPropagation()
+    this.dispatchEvent(
+      new CustomEvent('publisher-delete', {
+        bubbles: true,
+        composed: true,
+        detail: {
+          ids: this.checkedPublishers.map(p => p.id)
+        }
+      })
+    )
   }
 }
 
