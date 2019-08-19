@@ -34,8 +34,8 @@ export class PublisherList extends LitElement {
           border-radius: 5px 5px 5px 5px;
         }
 
-        ul > li > details[open] > summary {
-          /* border-bottom: rgba(0, 0, 0, 0.3) 1px solid; */
+        ul > li > details[open] {
+          border: none;
         }
 
         ul > li > details > summary {
@@ -44,6 +44,15 @@ export class PublisherList extends LitElement {
           grid-template-columns: 20px 30px 1fr;
           align-items: center;
           justify-content: center;
+          border: none;
+          border-radius: 0;
+        }
+
+        ul > li > details[open] > summary {
+          border: rgba(0, 0, 0, 0.3) 1px solid;
+          border-bottom: none;
+          border-radius: 5px 5px 0 0;
+          /* border-bottom: rgba(0, 0, 0, 0.3) 1px solid; */
         }
 
         ul > li > details > summary::-webkit-details-marker {
@@ -60,6 +69,12 @@ export class PublisherList extends LitElement {
           grid-template-columns: 1fr;
           align-items: center;
           justify-content: center;
+          border: none;
+        }
+
+        ul > li > details[open] > div {
+          border: rgba(0, 0, 0, 0.3) 1px dashed;
+          border-radius: 0 0 5px 5px;
         }
       `
     ]
@@ -83,8 +98,18 @@ export class PublisherList extends LitElement {
         ${this.publishers.map(
           p => html`
             <li>
-              <details>
-                <summary>
+              <details
+                @click=${e => {
+                  var el = e.currentTarget
+                  var isOpened = el.hasAttribute('open')
+
+                  if (isOpened) el.removeAttribute('open')
+                  else el.setAttribute('open', '')
+
+                  e.preventDefault()
+                }}
+              >
+                <summary @click=${e => e.stopPropagation()}>
                   <input type="checkbox" />
                   <mwc-icon
                     @click=${e =>
