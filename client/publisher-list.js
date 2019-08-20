@@ -45,7 +45,7 @@ export class PublisherList extends LitElement {
         ul > li > details > summary {
           list-style: none;
           display: grid;
-          grid-template-columns: 20px 30px 1fr;
+          grid-template-columns: 20px 30px 1fr 30px;
           align-items: center;
           justify-content: center;
           border: none;
@@ -79,6 +79,27 @@ export class PublisherList extends LitElement {
         ul > li > details[open] > div {
           border: rgba(0, 0, 0, 0.3) 1px dashed;
           border-radius: 0 0 5px 5px;
+        }
+
+        ul > li > form {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          border-radius: 5px;
+          overflow: hidden;
+          border: rgba(255, 0, 0, 0.3) 3px solid;
+          grid-gap: 3px 5px;
+          justify-content: center;
+          align-items: center;
+          padding: 3px 5px;
+        }
+
+        ul > li > form input {
+          font-size: 14px;
+        }
+
+        ul > li > form > div {
+          grid-column: span 2;
+          text-align: right;
         }
       `
     ]
@@ -114,43 +135,78 @@ export class PublisherList extends LitElement {
         ${this.publishers.map(
           (p, i) => html`
             <li>
-              <details
-                @click=${e => {
-                  var el = e.currentTarget
-                  var isOpened = el.hasAttribute('open')
+              ${p.editMode
+                ? html`
+                    <form>
+                      <label for="name">
+                        Name
+                      </label>
+                      <input id="name" name="name" .value=${p.name} />
+                      <label for="description">
+                        Description
+                      </label>
+                      <input id="description" name="description" .value=${p.description} />
+                      <label for="cron">
+                        Cron
+                      </label>
+                      <input id="cron" name="cron" .value=${p.intervalExpr} />
+                      <label for="api-url">
+                        API URL
+                      </label>
+                      <input id="api-url" name="apiUrl" .value=${p.apiUrl} />
+                      <div>
+                        <mwc-button @click=${e => this.onCancelEditingButtonClick(p)}>Cancel</mwc-button>
+                        <mwc-button raised @click=${e => this.onSaveEditingButtonClick(e, p)}>Save</mwc-button>
+                      </div>
+                    </form>
+                  `
+                : html`
+                    <details
+                      @click=${e => {
+                        var el = e.currentTarget
+                        var isOpened = el.hasAttribute('open')
 
-                  if (isOpened) el.removeAttribute('open')
-                  else el.setAttribute('open', '')
+                        if (isOpened) el.removeAttribute('open')
+                        else el.setAttribute('open', '')
 
-                  e.preventDefault()
-                }}
-              >
-                <summary @click=${e => e.stopPropagation()}>
-                  <input
-                    type="checkbox"
-                    value=${i}
-                    @change=${e => {
-                      this.getCheckedPublishers()
-                    }}
-                  />
-                  <mwc-icon
-                    @click=${e =>
-                      this.togglePlayButton({
-                        event: e,
-                        publisher: p
-                      })}
-                    >${this.computeIcon(p.status)}</mwc-icon
-                  >
-                  ${p.name}</summary
-                >
-                <div>
-                  <div>${p.description}</div>
-                  <div>
-                    <strong>Cron</strong>
-                    ${p.cronExpression}
-                  </div>
-                </div>
-              </details>
+                        e.preventDefault()
+                      }}
+                    >
+                      <summary @click=${e => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          value=${i}
+                          @change=${e => {
+                            this.getCheckedPublishers()
+                          }}
+                        />
+                        <mwc-icon
+                          @click=${e =>
+                            this.togglePlayButton({
+                              event: e,
+                              publisher: p
+                            })}
+                          >${this.computeIcon(p.status)}</mwc-icon
+                        >
+                        ${p.name}
+                        <mwc-icon
+                          @click=${e =>
+                            this.onClickEditButton({
+                              event: e,
+                              publisher: p
+                            })}
+                          >edit</mwc-icon
+                        >
+                      </summary>
+                      <div>
+                        <div>${p.description}</div>
+                        <div>
+                          <strong>Cron</strong>
+                          ${p.intervalExpr}
+                        </div>
+                      </div>
+                    </details>
+                  `}
             </li>
           `
         )}
@@ -245,6 +301,33 @@ export class PublisherList extends LitElement {
         composed: true,
         detail: {
           ids: this.checkedPublishers.map(p => p.id)
+        }
+      })
+    )
+  }
+
+  onClickEditButton({ event, publisher }) {
+    publisher.editMode = true
+    this.publishers = [...this.publishers]
+  }
+
+  onCancelEditingButtonClick(publisher) {
+    publisher.editMode = false
+    this.publishers = [...this.publishers]
+  }
+
+  onSaveEditingButtonClick(e, publisher) {
+    var form = e.currentTarget.closest('form')
+    var formData = new FormData(form)
+    var formDataObj = Object.fromEntries(formData.entries())
+
+    this.dispatchEvent(
+      new CustomEvent('publisher-edited', {
+        composed: true,
+        bubbles: true,
+        detail: {
+          data: formDataObj,
+          publisher
         }
       })
     )
