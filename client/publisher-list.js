@@ -21,14 +21,17 @@ export class PublisherList extends LitElement {
 
         ul {
           flex: 1;
-          width: 95vw;
+          width: 100%;
           list-style: none;
-          margin: 5px auto;
-          padding: 0;
+          margin: 0 auto;
+          box-sizing: border-box;
+          padding: 0.5rem;
           overflow: auto;
         }
 
         ul > li {
+          width: 90%;
+          margin: auto;
           overflow: hidden;
           margin-bottom: 0.5rem;
         }
@@ -203,6 +206,14 @@ export class PublisherList extends LitElement {
                         <div>
                           <strong>Cron</strong>
                           ${p.intervalExpr}
+                        </div>
+                        <div>
+                          <strong>Updater</strong>
+                          ${p.updater.name}
+                        </div>
+                        <div>
+                          <strong>Updated At</strong>
+                          ${p.updatedAt}
                         </div>
                       </div>
                     </details>
