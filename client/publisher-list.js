@@ -74,6 +74,7 @@ export class PublisherList extends LitElement {
         ul > li > details > div {
           display: grid;
           grid-template-columns: 1fr;
+          grid-gap: 0.5rem;
           align-items: center;
           justify-content: center;
           border: none;
@@ -82,6 +83,10 @@ export class PublisherList extends LitElement {
         ul > li > details[open] > div {
           border: rgba(0, 0, 0, 0.3) 1px dashed;
           border-radius: 0 0 5px 5px;
+        }
+
+        ul > li > details[open] > div > .column-span.full {
+          grid-column: 1 / -1;
         }
 
         ul > li > form {
@@ -103,6 +108,23 @@ export class PublisherList extends LitElement {
         ul > li > form > div {
           grid-column: span 2;
           text-align: right;
+        }
+
+        .title {
+          font-weight: bold;
+          margin: 0.5rem 0;
+        }
+
+        @media (min-width: 640px) {
+          ul > li > details > div {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+
+        @media (min-width: 960px) {
+          ul > li > details > div {
+            grid-template-columns: 1fr 1fr 1fr;
+          }
         }
       `
     ]
@@ -191,7 +213,10 @@ export class PublisherList extends LitElement {
                             })}
                           >${this.computeIcon(p.status)}</mwc-icon
                         >
-                        ${p.name}
+                        <div>
+                          <div class="title">${p.name}</div>
+                          ${p.description}
+                        </div>
                         <mwc-icon
                           @click=${e =>
                             this.onClickEditButton({
@@ -202,7 +227,6 @@ export class PublisherList extends LitElement {
                         >
                       </summary>
                       <div>
-                        <div>${p.description}</div>
                         <div>
                           <strong>Cron</strong>
                           ${p.intervalExpr}
