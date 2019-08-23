@@ -5,6 +5,9 @@ import { ScrollbarStyles } from '@things-factory/shell'
 import { css, html, LitElement } from 'lit-element'
 import './publisher-header'
 import './publisher-footer'
+import moment from 'moment'
+
+moment.defaultFormat = 'LL LTS'
 
 export class PublisherList extends LitElement {
   static get styles() {
@@ -232,12 +235,18 @@ export class PublisherList extends LitElement {
                           ${p.intervalExpr}
                         </div>
                         <div>
+                          <strong>API URL</strong>
+                          ${p.apiUrl}
+                        </div>
+                        <div>
                           <strong>Updater</strong>
-                          ${p.updater.name}
+                          ${(p.updater || {}).name}
                         </div>
                         <div>
                           <strong>Updated At</strong>
-                          ${p.updatedAt}
+                          ${moment(Number(p.updatedAt))
+                            .locale(navigator.language)
+                            .format()}
                         </div>
                       </div>
                     </details>
