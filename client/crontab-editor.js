@@ -38,7 +38,7 @@ export class CrontabEditor extends InputEditor {
       {
         backdrop: true,
         size: 'large',
-        title: i18next.t('title.select board')
+        title: i18next.t('title.setting schedule')
       }
     )
 
