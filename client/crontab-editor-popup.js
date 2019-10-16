@@ -1,6 +1,6 @@
-import { LitElement, html, css } from 'lit-element'
 import '@material/mwc-button'
 import { i18next } from '@things-factory/i18n-base'
+import { css, html, LitElement } from 'lit-element'
 
 export class CrontabEditorPopup extends LitElement {
   static get properties() {
