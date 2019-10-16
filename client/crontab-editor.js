@@ -5,6 +5,8 @@ import { InputEditor } from '@things-factory/grist-ui'
 import { openPopup } from '@things-factory/layout-base'
 import { html } from 'lit-element'
 import './crontab-editor-popup'
+import { i18next } from '@things-factory/i18n-base'
+
 export class CrontabEditor extends InputEditor {
   get editorTemplate() {
     return html`
