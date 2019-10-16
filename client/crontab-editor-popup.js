@@ -5,7 +5,7 @@ import { i18next } from '@things-factory/i18n-base'
 export class CrontabEditorPopup extends LitElement {
   static get properties() {
     return {
-      values: Array,
+      valueString: String,
       second: String,
       minute: String,
       hour: String,
@@ -37,7 +37,7 @@ export class CrontabEditorPopup extends LitElement {
         width: 100%;
         height: 100%;
         padding: 1rem;
-        grid-template-rows: auto 1fr auto;
+        grid-template-rows: auto auto 1fr auto;
         align-items: stretch;
         justify-content: center;
       }
@@ -82,6 +82,44 @@ export class CrontabEditorPopup extends LitElement {
           }
         }}
       >
+        <div id="example-area">
+          <select @change=${e => (this.valueString = e.currentTarget.value)}>
+            <optgroup label="label.second by second">
+              <option value="* * * * * *">${i18next.t('text.every second')}</option>
+              <option value="*/2 * * * * *">${i18next.t('text.every 2 seconds')}</option>
+              <option value="*/15 * * * * *">${i18next.t('text.every 15 seconds')}</option>
+              <option value="*/30 * * * * *">${i18next.t('text.every 30 seconds')}</option>
+            </optgroup>
+            <optgroup label="label.minute by minute">
+              <option value="0 * * * * *">${i18next.t('text.every minute')}</option>
+              <option value="0 */2 * * * *">${i18next.t('text.every 2 minutes')}</option>
+              <option value="0 */15 * * * *">${i18next.t('text.every 15 minutes')}</option>
+              <option value="0 */30 * * * *">${i18next.t('text.every half hour')}</option>
+            </optgroup>
+            <optgroup label="label.hourly">
+              <option value="0 0 * * * *">${i18next.t('text.every hour')}</option>
+              <option value="0 0 */2 * * *">${i18next.t('text.every 2 hours')}</option>
+              <option value="0 0 */12 * * *">${i18next.t('text.every 12 hours')}</option>
+              <option value="0 0 10-19 * * *">${i18next.t('text.every hour during working time')}</option>
+            </optgroup>
+            <optgroup label="label.daily">
+              <option value="0 0 0 * * *">${i18next.t('text.every day')}</option>
+            </optgroup>
+            <optgroup label="label.weekly">
+              <option value="0 0 0 * * SUN">${i18next.t('text.every sunday')}</option>
+              <option value="0 0 0 * * 0">${i18next.t('text.every sunday(2)')}</option>
+              <option value="0 0 0 * * 1-5">${i18next.t('text.every weekday')}</option>
+            </optgroup>
+            <optgroup label="label.monthly">
+              <option value="0 0 0 1 * *">${i18next.t('text.the first day of every month')}</option>
+              <option value="0 0 10 21 * *">${i18next.t('text.10 am on every payday')}</option>
+            </optgroup>
+            <optgroup label="label.yearly">
+              <option value="0 0 0 1 1 *">${i18next.t('text.the first day of every year')}</option>
+              <option value="0 0 0 25 12 *">${i18next.t('text.every christmas')}</option>
+            </optgroup>
+          </select>
+        </div>
         <div id="crontab-input-area">
           <input
             type="text"
@@ -159,7 +197,7 @@ export class CrontabEditorPopup extends LitElement {
   }
 
   get focusableElements() {
-    return Array.from(this.renderRoot.querySelectorAll('input, mwc-button'))
+    return Array.from(this.renderRoot.querySelectorAll('select, input, mwc-button'))
   }
 
   connectedCallback() {
@@ -169,14 +207,23 @@ export class CrontabEditorPopup extends LitElement {
   }
 
   firstUpdated() {
-    this.second = this.values[0]
-    this.minute = this.values[1]
-    this.hour = this.values[2]
-    this.dayOfMonth = this.values[3]
-    this.month = this.values[4]
-    this.dayOfWeek = this.values[5]
-
     this.renderRoot.querySelector('input').focus()
+  }
+
+  updated(changed) {
+    if (changed.has('valueString')) {
+      var values = this.valueString.split(' ')
+
+      if (values.length == 1) values = ['*', '*', '*', '*', '*', '*']
+      else if (values.length == 5) values = ['0'].concat(values)
+
+      this.second = values[0]
+      this.minute = values[1]
+      this.hour = values[2]
+      this.dayOfMonth = values[3]
+      this.month = values[4]
+      this.dayOfWeek = values[5]
+    }
   }
 
   showTooltip({ type }) {
