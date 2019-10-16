@@ -25,13 +25,10 @@ export class CrontabEditor extends InputEditor {
   }
 
   showEditorPopup() {
-    var values = (this.value || '').split(' ')
-    if (values.length == 1) values = ['*', '*', '*', '*', '*', '*']
-    else if (values.length == 5) values = ['0'].concat(values)
     var popup = openPopup(
       html`
         <crontab-editor-popup
-          .values=${values}
+          .valueString=${this.value}
           @crontab-changed=${e => {
             this._dirtyValue = e.detail.value
             popup.close()
