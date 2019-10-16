@@ -3,6 +3,7 @@ import { i18next } from '@things-factory/i18n-base'
 import { css, html, LitElement } from 'lit-element'
 
 function createCronRegex(type) {
+  // https://gist.github.com/dkandalov/a2aed17cfdeb65243022
   var regexByField = {}
   regexByField['sec'] = '[0-5]?\\d'
   regexByField['min'] = '[0-5]?\\d'
@@ -234,7 +235,7 @@ export class CrontabEditorPopup extends LitElement {
           id="second-input"
           type="text"
           .value=${this.second}
-          @change=${e => (this.second = e.currentTarget.value)}
+          @input=${e => (this.second = e.currentTarget.value)}
           @focus=${e => {
             this.showTooltip({ type: 'second' })
           }}
@@ -245,7 +246,7 @@ export class CrontabEditorPopup extends LitElement {
           id="minute-input"
           type="text"
           .value=${this.minute}
-          @change=${e => (this.minute = e.currentTarget.value)}
+          @input=${e => (this.minute = e.currentTarget.value)}
           @focus=${e => {
             this.showTooltip({ type: 'minute' })
           }}
@@ -256,7 +257,7 @@ export class CrontabEditorPopup extends LitElement {
           id="hour-input"
           type="text"
           .value=${this.hour}
-          @change=${e => (this.hour = e.currentTarget.value)}
+          @input=${e => (this.hour = e.currentTarget.value)}
           @focus=${e => {
             this.showTooltip({ type: 'hour' })
           }}
@@ -267,7 +268,7 @@ export class CrontabEditorPopup extends LitElement {
           id="day-of-month-input"
           type="text"
           .value=${this.dayOfMonth}
-          @change=${e => (this.dayOfMonth = e.currentTarget.value)}
+          @input=${e => (this.dayOfMonth = e.currentTarget.value)}
           @focus=${e => {
             this.showTooltip({ type: 'dayOfMonth' })
           }}
@@ -278,7 +279,7 @@ export class CrontabEditorPopup extends LitElement {
           id="month-input"
           type="text"
           .value=${this.month}
-          @change=${e => (this.month = e.currentTarget.value)}
+          @input=${e => (this.month = e.currentTarget.value)}
           @focus=${e => {
             this.showTooltip({ type: 'month' })
           }}
@@ -289,7 +290,7 @@ export class CrontabEditorPopup extends LitElement {
           id="day-of-week-input"
           type="text"
           .value=${this.dayOfWeek}
-          @change=${e => (this.dayOfWeek = e.currentTarget.value)}
+          @input=${e => (this.dayOfWeek = e.currentTarget.value)}
           @focus=${e => {
             this.showTooltip({ type: 'dayOfWeek' })
           }}
