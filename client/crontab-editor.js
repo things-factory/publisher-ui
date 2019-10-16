@@ -1,12 +1,10 @@
 import '@material/mwc-button'
 import '@material/mwc-fab'
 import '@material/mwc-icon'
-import { ScrollbarStyles } from '@things-factory/shell'
-import { openPopup } from '@things-factory/layout-base'
-import { css, html } from 'lit-element'
 import { InputEditor } from '@things-factory/grist-ui'
+import { openPopup } from '@things-factory/layout-base'
+import { html } from 'lit-element'
 import './crontab-editor-popup'
-
 export class CrontabEditor extends InputEditor {
   get editorTemplate() {
     return html`
