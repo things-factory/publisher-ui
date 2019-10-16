@@ -1,4 +1,6 @@
 {
+  "field.crontab": "crontab",
+  "field.api_url": "API URL",
   "label.confirm": "확인",
   "label.daily": "일간",
   "label.day-of-month": "날짜",

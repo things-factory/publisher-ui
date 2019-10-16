@@ -32,7 +32,12 @@ export class CrontabEditor extends InputEditor {
             popup.close()
           }}
         ></crontab-editor-popup>
-      `
+      `,
+      {
+        backdrop: true,
+        size: 'large',
+        title: i18next.t('title.select board')
+      }
     )
 
     popup.onclosed = () => {

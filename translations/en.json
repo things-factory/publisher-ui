@@ -1,4 +1,6 @@
 {
+  "field.crontab": "crontab",
+  "field.api_url": "API URL",
   "label.confirm": "confirm",
   "label.daily": "daily",
   "label.day-of-month": "day of month",
