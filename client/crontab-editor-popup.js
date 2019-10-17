@@ -198,20 +198,20 @@ export class CrontabEditorPopup extends LitElement {
         <select id="example" @change=${e => (this.valueString = e.currentTarget.value)}>
           <optgroup label="${i18next.t('label.second by second')}">
             <option value="* * * * * *">${i18next.t('text.every second')}</option>
-            <option value="*/2 * * * * *">${i18next.t('text.every 2 seconds')}</option>
-            <option value="*/15 * * * * *">${i18next.t('text.every 15 seconds')}</option>
-            <option value="*/30 * * * * *">${i18next.t('text.every 30 seconds')}</option>
+            <option value="0/2 * * * * *">${i18next.t('text.every 2 seconds')}</option>
+            <option value="0/15 * * * * *">${i18next.t('text.every 15 seconds')}</option>
+            <option value="0/30 * * * * *">${i18next.t('text.every 30 seconds')}</option>
           </optgroup>
           <optgroup label="${i18next.t('label.minute by minute')}">
             <option value="0 * * * * *">${i18next.t('text.every minute')}</option>
-            <option value="0 */2 * * * *">${i18next.t('text.every 2 minutes')}</option>
-            <option value="0 */15 * * * *">${i18next.t('text.every 15 minutes')}</option>
-            <option value="0 */30 * * * *">${i18next.t('text.every half hour')}</option>
+            <option value="0 0/2 * * * *">${i18next.t('text.every 2 minutes')}</option>
+            <option value="0 0/15 * * * *">${i18next.t('text.every 15 minutes')}</option>
+            <option value="0 0/30 * * * *">${i18next.t('text.every half hour')}</option>
           </optgroup>
           <optgroup label="${i18next.t('label.hourly')}">
             <option value="0 0 * * * *">${i18next.t('text.every hour')}</option>
-            <option value="0 0 */2 * * *">${i18next.t('text.every 2 hours')}</option>
-            <option value="0 0 */12 * * *">${i18next.t('text.every 12 hours')}</option>
+            <option value="0 0 0/2 * * *">${i18next.t('text.every 2 hours')}</option>
+            <option value="0 0 0/12 * * *">${i18next.t('text.every 12 hours')}</option>
             <option value="0 0 10-19 * * *">${i18next.t('text.every hour during working time')}</option>
           </optgroup>
           <optgroup label="${i18next.t('label.daily')}">
