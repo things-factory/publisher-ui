@@ -1,6 +1,6 @@
 {
   "name": "@things-factory/publisher-ui",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "main": "dist-server/index.js",
   "browser": "client/index.js",
   "things-factory": true,
