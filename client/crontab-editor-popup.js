@@ -98,6 +98,9 @@ export class CrontabEditorPopup extends LitElement {
       :host * {
         box-sizing: border-box;
       }
+      :host *:focus {
+        outline: none;
+      }
 
       #wrapper {
         display: grid;
@@ -113,28 +116,42 @@ export class CrontabEditorPopup extends LitElement {
 
       #wrapper > label[for='example'] {
         text-align: right;
-        grid-column: 4;
+        grid-column: 3;
+        font: normal 1em var(--theme-font);
+        color: var(--secondary-color);
+        text-transform: capitalize;
       }
 
       #wrapper > select#example {
-        grid-column: 5 / span 2;
+        grid-column: 4 / span 3;
         width: 100%;
         height: 100%;
+        font: normal 0.9em var(--theme-font);
         text-transform: capitalize;
       }
 
       #wrapper > input {
         width: 100%;
-        height: 100%;
+        margin-top: var(--margin-default);
+        padding: 5px;
+        border-radius: var(--border-radius);
+        border: var(--border-dark-color);
+        font: normal 1em var(--theme-font);
+      }
+      #wrapper > input:focus {
+        border: 1px solid var(--primary-color);
       }
 
       #wrapper > input:invalid {
-        outline: var(--status-danger-color, red) 1px solid;
+        border: 1px solid var(--status-danger-color);
+        color: var(--status-danger-color);
       }
 
       #wrapper > label {
         width: 100%;
         height: 100%;
+        font: normal 0.8em var(--theme-font);
+        color: var(--primary-color);
       }
 
       #wrapper > label:not([for='example']) {
@@ -155,20 +172,29 @@ export class CrontabEditorPopup extends LitElement {
       #tooltip > div {
         padding: 0.25rem 0.5rem;
         border-bottom: #ccc 1px dashed;
+        font: normal 0.9em var(--theme-font);
       }
 
       #tooltip > .crontab-value {
         text-align: right;
-        font-weight: bold;
+        color: var(--secondary-color);
       }
 
       #tooltip > .crontab-description {
         text-align: left;
+        color: #585858;
       }
 
       mwc-button {
+        background-color: var(--secondary-color);
+        border-radius: var(--button-border-radius);
         grid-column: 5 / span 2;
         justify-self: flex-end;
+        --mdc-theme-primary: #fff;
+      }
+      mwc-button:hover,
+      mwc-button:active {
+        background-color: var(--primary-color);
       }
     `
   }
