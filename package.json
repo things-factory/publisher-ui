@@ -1,6 +1,6 @@
 {
   "name": "@things-factory/publisher-ui",
-  "version": "1.1.0-alpha.1",
+  "version": "2.0.0",
   "main": "dist-server/index.js",
   "browser": "client/index.js",
   "things-factory": true,
@@ -28,8 +28,8 @@
     "migration:revert": "node ./node_modules/typeorm/cli.js migration:revert"
   },
   "dependencies": {
-    "@things-factory/layout-base": "^1.0.0-alpha.1",
-    "@things-factory/shell": "^1.0.0-alpha.1",
+    "@things-factory/layout-base": "^2.0.0",
+    "@things-factory/shell": "^2.0.0",
     "moment": "^2.24.0"
   },
   "devDependencies": {}
