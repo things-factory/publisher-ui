@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@things-factory/layout-base": "^2.0.0",
-    "@things-factory/shell": "^2.0.0",
     "moment": "^2.24.0"
   },
   "devDependencies": {}
